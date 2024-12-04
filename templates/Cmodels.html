@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #302F3F;
+            color: #000000;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 50px;
+        }
+
+        a {
+            display: inline-block;
+            width: 150px;
+            height: 40px;
+            background-color: #499168;
+            border: 1px solid #D9A769;
+            color: #F4F4F3;
+            cursor: pointer;
+            margin: 20px;
+            padding: 5px;
+            text-decoration: none;
+            text-align: center;
+            line-height: 30px;
+            font-size: 14pt;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #CD7455;
+        }
+
+        .container {
+            text-align: center;
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #F4F4F3;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid #D9A769;
+        }
+
+        h1 {
+            font-size: 40pt;
+            color: #E2442F;
+            margin-top: 50px;
+        }
+
+        h2 {
+            font-size: 20pt;
+            color: #E2442F;
+            margin: 20px 0;
+        }
+        h3 {
+            font-size: 20pt;
+            color: #E2442F;
+            margin: 20px 0;
+        }
+        .scrollable-container {
+            max-height: 400px;
+            overflow: auto;
+            padding: 20px;
+        }
+
+        .cluster-info {
+            margin-bottom: 20px;
+        }
+
+        .cluster-info p {
+            font-size: 14pt;
+            margin: 10px 0;
+        }
+
+        .silhouette-score {
+            font-size: 14pt;
+            margin: 20px 0;
+        }
+
+        .cluster-words {
+            margin-bottom: 20px;
+        }
+
+        .cluster-words img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin: 10px auto;
+            display: block;
+            filter: brightness(120%);
+            border: 2px solid #D9A769;
+            border-radius: 10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container border  border-4">
+        <h1>Results</h1>
+
+        {% if 'kmeans' in results %}
+        <h2>K-means Results</h2>
+        <div class="scrollable-container border border-4">
+            <h2 class="beige">Cluster Assignments:</h2>
+            {% for i in range(1000) %}
+                <p class="brown">{{ results['kmeans']['text_data'][i+1] }} : Cluster {{ (results['kmeans']['labels'][i] ) }}</p>
+            {% endfor %}
+        
+        </div>
+        <h3>Silhouette Score</h3>
+        <p>{{ results['kmeans']['silhouette_scoree'] }}</p>
+
+        <div class="scrollable-container border border-4">
+            {% for i in range(5) %}
+                <h2 class="beige">Common Words in Cluster {{results['kmeans']['labels'][i]}}:</h2>
+                <img src="/static/common_words_{{i}}.png" width="400" height="300">
+
+                <!-- <h2>Unique Words in Cluster {{i+1}}:</h2>
+                <img src="/unique_words/{{i}}" width="400" height="300"> -->
+            {% endfor %}
+        </div>
+        <!-- <div>
+            <img src={{results['kmeans']['learning_curve_images']}} alt="">
+        </div> -->
+        {% endif %}
+
+        {% if 'dbscan' in results %}
+            <h2>DBSCAN Results</h2>
+            <h3>Labels</h3>
+            <p>{{ results['dbscan']['labels'] }}</p>
+
+            <h3>Silhouette Average</h3>
+            <p>{{ results['dbscan']['silhouette_avg'] }}</p>
+            <div class="scrollable-container border border-4">
+                <h3>Word Clouds</h3>
+                {% for label, wordcloud_svg in results['dbscan']['wordclouds'] %}
+                    <h4>Cluster {{ label }}</h4>
+                    <div>{{ wordcloud_svg | safe }}</div>
+                {% endfor %}
+            </div>
+            <div class="scrollable-container border border-4">
+                <h3>Common Words</h3>
+                {% for label, words in results['dbscan']['common_words'].items() %}
+                    <h4>Cluster {{ label }}</h4>
+                    <ul>
+                        {% for word, score in words %}
+                            <li>{{ word }} ({{ score }})</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </div>
+            <div class="scrollable-container border border-4">
+                <h3>Unique Words</h3>
+                {% for label, words in results['dbscan']['unique_words'].items() %}
+                    <h4>Cluster {{ label }}</h4>
+                    <ul>
+                        {% for word in words %}
+                            <li>{{ word }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </div>
+            <div class="scrollable-container border border-4">
+                <h3>Cluster Labels</h3>
+                <ul>
+                    {% for label, cluster_label in results['dbscan']['cluster_labels'].items() %}
+                        <li>Cluster {{ label }}: {{ cluster_label }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- <div>
+                <img src={{results['dbscan']['learning_curve_images']}} alt="">
+            </div> -->
+        {% endif %}
+    </div>
+    
+</body>
+</html>

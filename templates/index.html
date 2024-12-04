@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    
+    <style>
+        body {
+            background-color: #302F3F;
+            color: #F4F4F3;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 50px;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 40pt;
+            color: #D9A769;
+            margin-bottom: 50px;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .option {
+            margin: 20px;
+        }
+
+        a {
+            display: inline-block;
+            width: 100px;
+            height: 40px;
+            background-color: #887B94;
+            border: 1px solid #F4F4F3;
+            color: #F4F4F3;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            line-height: 40px;
+            font-size: 14pt;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #E2442F;
+        }
+
+        p {
+            font-size: 20pt;
+            color: #F4F4F3;
+        }
+        h1 {
+            font-size: 40px;
+            color: #E2442F;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Flask Machine Learning Application</h1>
+        <div class="options">
+            <div class="option">
+                <p>Choose your position:</p>
+            </div>
+            <div class="option">
+                <a href="admin">Admin</a>
+            </div>
+            <div class="option">
+                <a href="user">User</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

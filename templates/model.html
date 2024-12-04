@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNN</title>
+
+    <style>
+        body {
+            background-color: #302F3F;
+            color: #F4F4F3;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin: 50px;
+        }
+
+        a {
+            display: inline-block;
+            width: 150px;
+            height: 40px;
+            background-color: #499168;
+            border: 1px solid #F7F5EA;
+            color: #F7F5EA;
+            cursor: pointer;
+            margin: 20px;
+            padding: 5px;
+            text-decoration: none;
+            text-align: center;
+            line-height: 30px;
+            font-size: 14pt;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #CD7455;
+        }
+
+        h2 {
+            font-size: 30pt;
+            color: #CD7455;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h3 {
+            font-size: 20pt;
+            color: #F7F5EA;
+            margin: 20px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        table, th, td {
+            border: 1px solid #499168;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #499168;
+            color: #F7F5EA;
+        }
+
+        .brown {
+            color: #87746E;
+            font-size: 15pt;
+        }
+    </style>
+</head>
+<body>
+    <a href="home">Home Page</a>
+    <h1 align="center" class="orange">Model Training</h1>
+
+    <h2 class="beige">Preprocessed Data</h2>
+    <div style="height: 400px; overflow: auto;">
+        {{dataframe|safe}}
+    </div>
+    <br>
+    <label style="margin-top: 20px; font-size: 20pt;" class="beige">Choose Your Classification Model:</label>
+    <br>
+    <button onclick="goto('nb')">Naive Bayes</button>
+    <button onclick="goto('svm')">SVM</button>
+    <button onclick="goto('knn')"id="knn" >k-Nearest Neighbor</button>
+    <button onclick="goto('decisiontree')"id="decisiontree" >Decision Trees</button>
+    <br><br>
+    <label style="margin-top: 20px; font-size: 20pt;" class="beige">Choose Your Clustering Model:</label>
+    <br>
+    <button onclick="goto('kmean')"id="kmean">K-means</button>
+    <button onclick="goto('dbscan')"id="dbscan" >DBSCAN</button>
+
+
+    <script>
+        function goto(model){
+            switch(model){
+                case 'nb': window.location.href = "/naivebayes";
+                break;
+                case 'svm': window.location.href = "/svm";
+                break;
+                case 'knn': window.location.href = "/knn";
+                break;
+                case 'decisiontree': window.location.href = "/decisiontree";
+                break;
+                case 'kmean': window.location.href = "/kmean";
+                break;
+                case 'dbscan': window.location.href = "/dbscan";
+                break;
+            }
+        }
+
+    </script>
+</body>
+</html>

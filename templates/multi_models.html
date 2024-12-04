@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multi-Models Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <style>
+        body {
+        background-color: #302F3F;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        color: #F4F4F3;
+        }
+
+        a {
+        display: inline-block;
+        width: 150px;
+        height: 40px;
+        border: none;
+        background-color: #887B94;
+        color: #F4F4F3;
+        text-align: center;
+        line-height: 40px;
+        text-decoration: none;
+        margin: 20px;
+        padding: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+        background-color: #D9A769;
+        }
+
+        .orange {
+        color: #E2442F;
+        }
+
+        .darkgreen {
+        color: #212D28;
+        }
+
+        .green {
+        color: #499168;
+        }
+
+        .brown {
+        color: #D9A769;
+        }
+
+        .beige {
+        color: #F7F5EA;
+        }
+
+        h1 {
+        font-size: 40pt;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #E2442F;
+        }
+
+        h2 {
+        font-size: 20pt;
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: #E2442F;
+        }
+
+        table {
+        color: #302F3F;
+        border-color: #D9A769;
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        background-color: #887B94;
+        }
+
+        th,
+        td {
+        border: 1px solid #D9A769;
+        padding: 8px;
+        background-color: #F7F5EA;
+        }
+
+        th {
+        background-color: #D9A769;
+        font-weight: bold;
+        text-align: left;
+        }
+
+    </style>
+</head>
+<body>
+    <a href="home">Home Page</a>
+    <h1>Multi-Models Results</h1>
+    
+    <h2>Selected Models:</h2>
+    <ul>
+        {% for model in selected_models %}
+            <li>{{ model }}</li>
+        {% endfor %}
+    </ul>
+
+    <table>
+        <tr>
+            <th>Model</th>
+            <th>Metric</th>
+            <th>Value</th>
+        </tr>
+        {% for model in selected_models %}
+            <tr>
+                <td rowspan="4">{{ model }}</td>
+                <td>Accuracy</td>
+                <td>{{ accuracy[model] }}</td>
+            </tr>
+            <tr>
+                <td>Precision</td>
+                <td>{{ precision[model] }}</td>
+            </tr>
+            <tr>
+                <td>Recall</td>
+                <td>{{ recall[model] }}</td>
+            </tr>
+            <tr>
+                <td>Confusion Matrix</td>
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <th></th>
+                            {% for label in range(confusion_matrix[model].shape[1]) %}
+                                <th>{{ label }}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for i in range(confusion_matrix[model].shape[0]) %}
+                            <tr>
+                                <th>{{ i }}</th>
+                                {% for j in range(confusion_matrix[model].shape[1]) %}
+                                    <td>{{ confusion_matrix[model][i, j] }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+                
+            </tr>
+            
+            <tr>
+            <td ></td>
+                <td>Learning Curve</td>
+            <td colspan="2">
+                <img src="{{learning_curve_images[model]}}" width="600" height="500">
+            </td>
+            </tr>
+           
+        {% endfor %}
+    </table>
+    
+    
+</body>
+</html> 
+

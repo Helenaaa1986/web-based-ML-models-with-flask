@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        background-color: #302f3f;
+        color: #f4f4f3;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
+
+      a {
+        display: inline-block;
+        padding: 10px 20px;
+        border: none;
+        background-color: #887b94;
+        color: #f4f4f3;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+      }
+
+      a:hover {
+        background-color: #d9a769;
+      }
+
+      h1 {
+        font-size: 40px;
+        color: #e2442f;
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 20px;
+      }
+
+      form {
+        margin-top: 40px;
+        text-align: center;
+      }
+
+      label {
+        font-size: 20px;
+        color: #f4f4f3;
+        margin-top: 20px;
+        display: block;
+      }
+
+      input[type="file"] {
+        color: #f4f4f3;
+        border: none;
+        background-color: #887b94;
+        padding: 10px;
+        width: 300px;
+        margin-top: 5px;
+        font-size: 14px;
+      }
+
+      .preprocess-option {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #f4f4f3;
+        display: inline-block;
+        margin-right: 20px;
+        letter-spacing: 1px;
+      }
+      .preprocess-options {
+        margin-top: 10px;
+        font-size: 18px;
+        color: #f4f4f3;
+        display: inline-block;
+        margin-right: 20px;
+        letter-spacing: 1px;
+      }
+
+      button[type="submit"] {
+        width: 200px;
+        height: 40px;
+        border: none;
+        background-color: #e2442f;
+        color: #f4f4f3;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #d9a769;
+      }
+      input[type="submit"] {
+        width: 200px;
+        height: 40px;
+        border: none;
+        background-color: #e2442f;
+        color: #f4f4f3;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+      }
+      /* Responsive Styles */
+      @media only screen and (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+
+        h1 {
+          font-size: 32px;
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+          width: 100%;
+        }
+
+        .preprocess-option {
+          margin-bottom: 10px;
+        }
+
+        button[type="submit"] {
+          width: 100%;
+        }
+      }
+
+      /* Custom Color Scheme */
+      .orange {
+        color: #e2442f;
+      }
+      .column {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 10px;
+        text-align: center;
+        display: none;
+      }
+      .flex{
+        display: flex;
+        justify-content: center;
+      }
+      input{
+        background: white;
+        border: 1px solid white;
+      }
+      h6{
+        color: #e2442f;
+        margin-top: 4px;
+      }
+
+      .info-icon {
+          cursor: pointer;
+          text-decoration: underline;
+          font-style: italic;
+          color: rgb(118, 118, 248);
+          font-weight: 400;
+          margin-left: 1px;
+      }
+
+
+        .info-tooltip {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            border: 1px solid black;
+            box-shadow: #f9f9f9;
+            padding: 10px;
+            z-index: 1;
+            margin-bottom: 10px;
+            width: 285px;
+            
+        }
+    </style>
+  </head>
+  <body>
+    <a href="/dashboard">DashBoard</a>
+    <h1>Preprocess Data</h1>
+    <div class="container">
+      <form action="/preprocess/supervised" method="POST" enctype="multipart/form-data" id="classification_form">
+        <label for="dataset">Upload Training File:</label>
+        <br /><br />
+        <input type="file" name="dataset" id="dataset" required />
+        <br /><br />
+        <label for="preprocessoption"
+          >Select the Preprocessing Operations you want to perform on the
+          data:</label
+        >
+        <br />
+        <input
+          type="checkbox"
+          name="preprocessoption"
+          id="lowercase"
+          value="lowercase"
+        />
+        <span class="preprocess-option">Convert to lower-case</span>
+        <input
+          type="checkbox"
+          name="preprocessoption"
+          id="stopwords"
+          value="stopwords"
+        />
+        <span class="preprocess-option">Remove stop words</span>
+        <input
+          type="checkbox"
+          name="preprocessoption"
+          id="lemmatize"
+          value="lemmatize"
+        />
+        <span class="preprocess-option">Lemmatization</span>
+        <br />
+        <button type="submit">Preprocess Data</button>
+      </form>
+      <form action="/preprocess/unsupervised" method="POST" enctype="multipart/form-data" id="clustring_form">
+        <label for="dataset">Upload Training File:</label>
+        <br /><br />
+        <input type="file" name="dataset" id="dataset" required />
+        <br /><br />
+        <label for="preprocessoption"
+          >Select the Preprocessing Operations you want to perform on the
+          data:</label
+        >
+        <br />
+        <input
+          type="checkbox"
+          name="preprocessoption"
+          id="lowercase"
+          value="lowercase"
+        />
+        <span class="preprocess-option">Convert to lower-case</span>
+        <input
+          type="checkbox"
+          name="preprocessoption"
+          id="stopwords"
+          value="stopwords"
+        />
+        <span class="preprocess-option">Remove stop words</span>
+        <input
+          type="checkbox"
+          name="preprocessoption"
+          id="lemmatize"
+          value="lemmatize"
+        />
+        <span class="preprocess-option">Lemmatization</span>
+        <br />
+        <button type="submit">Preprocess Data</button>
+      </form>
+    </div>
+    <div class="container">
+      <br>
+      <div class="table-responsive" style="height: 500px; overflow: auto">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              {% for column in columns %}
+              <th>{{ column }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+            <tr>
+              {% for value in row %}
+              <td>{{ value }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="text-center" id="classification_algo">
+        <h1>Choose Your Classification Model:</h1>
+        <br />
+        <div class="flex">
+          <div>
+            <input type="checkbox" name="model" value="naivebayes" id="nb" />
+            <span class="preprocess-options"> Naive Bayes</span>
+            <div class="column" id="naivebayes">
+              <h6>Enter Hyper-parameter</h2>
+                <div class="flex">
+                  <div style="display: flex; flex-direction: column;">
+                    <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">alpha (Laplace smoothing):
+                    <span class="info-icon">(i)</span>
+                    <div class="info-tooltip">
+
+                      <p style="font-size: 13px; width:265px; color: black;">
+                        Alpha is a smoothing parameter used in Naive Bayes, particularly in the Multinomial Naive Bayes variant. It's applied to avoid the problem of zero probability in the dataset. Essentially, it assigns a small, non-zero probability to all the features so that no probability is ever calculated as zero — this is particularly important for words that appear in the test set but not in the training set.</p>
+                    </div>
+                  </label>
+                  </div>
+                  <!-- <input type="text" placeholder="1.0 ..etc" name="naivebayes_hyperparameter1" id="" > -->
+                   <select id="naivebayes_hyperparameter1" name="naivebayes_hyperparameter1" style="height: 25px; width: 100px; margin-top: 23px;">
+                        <option value="1.0">1.0</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.01">0.01</option>
+                        <option value="0.001">0.001</option>
+                        <option value="0.0001">0.0001</option>
+                    </select>
+                </div>
+                <div class="flex">
+              <div style="display: flex; flex-direction: column;">
+                  <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                      fit_prior (Class Prior Probabilities):
+                      <span class="info-icon">(i)</span>
+                      <div class="info-tooltip">
+                          <p style="font-size: 13px; width: 265px; color:black;">
+                              This parameter determines whether to learn class prior probabilities or not.
+                              If false, a uniform prior will be used. This is essentially a choice between whether
+                              to use the empirical prior probability of your training set or assume no prior
+                              (making the assumption that all classes are equally likely regardless of the training data).
+                          </p>
+                      </div>
+                  </label>
+              </div>
+              <select id="naivebayes_hyperparameter2" name="naivebayes_hyperparameter2" style="height: 25px; width: 100px; margin-top: 23px;">
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+              </select>
+                </div>
+                
+                <h6>K-fold</h6>
+                <div class="flex">
+                  <div style="display: flex; flex-direction: column;">
+                      <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                          kfold (Number of Folds in Cross-Validation):
+                          <span class="info-icon">(i)</span>
+                          <div class="info-tooltip">
+                              <p style="font-size: 13px; width: 265px; color: black;">
+                                  This parameter specifies the number of folds in a (k-fold) cross-validation. Cross-validation is a resampling procedure used to evaluate machine learning models on a limited data sample. The procedure has a single parameter called k that refers to the number of groups that a given data sample is to be split into. This process is beneficial in assessing the effectiveness of the model, especially in avoiding overfitting.
+                              </p>
+                          </div>
+                      </label>
+                  </div>
+                  <select id="naivebayes_kfold" name="naivebayes_kfold" style="height: 25px; width: 100px; margin-top: 23px;">
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                  </select>
+                </div>
+                <div class="flex">
+                  <div style="display: flex; flex-direction: column;">
+                      <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                          SMOTE:
+                          <span class="info-icon">(i)</span>
+                          <div class="info-tooltip">
+                              <p style="font-size: 13px; width: 265px; color:black;">
+                                  This parameter specifies whether to use the Synthetic Minority Over-sampling Technique (SMOTE) to balance the class distribution. SMOTE is an oversampling technique that generates synthetic samples from the minority class. It is used to obtain a more balanced dataset, which can improve the performance of the model, especially when the classes are imbalanced.
+                              </p>
+                          </div>
+                      </label>
+                  </div>
+                  <input type="checkbox" 
+                  style="margin-top: 1.5rem; margin-left: 0.8rem;" name="naivebayes_smote" id="naivebayes_smote">
+                    </div>
+                
+            </div>
+          </div>
+  
+          <div>
+            <input type="checkbox" name="model" value="svm" />
+            <span class="preprocess-options">SVM</span>
+            <div class="column" id="svm">
+              <h6>Enter Hyper-parameter</h2>
+                
+                <div class="flex">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                            kernel:
+                            <span class="info-icon">(i)</span>
+                            <div class="info-tooltip">
+                                <p style="font-size: 13px; width:265px; color: black;">
+                                    The kernel function is a critical component of SVMs, as it determines the type of hyperplane and transformation used for classifying data. It essentially defines the decision boundary between the classes. Common kernel functions include linear, polynomial, radial basis function (RBF), and sigmoid. The choice of kernel affects the flexibility and fit of the SVM to the data.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <select id="svm_hyperparameter1" name="svm_hyperparameter1" style="height: 25px; width: 100px; margin-top: 23px;">
+                        <option value="rbf">rbf</option>
+                        <option value="linear">linear</option>
+                        <option value="sigmoid">sigmoid</option>
+                    </select>
+                </div>
+
+                <div class="flex">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                            C (Regularization parameter):
+                            <span class="info-icon">(i)</span>
+                            <div class="info-tooltip">
+                                <p style="font-size: 13px; width:265px; color: black;">
+                                    The C parameter tells the SVM optimization how much you want to avoid misclassifying each training example. A small value for C makes the decision surface smooth, while a high value aims to classify all training examples correctly by giving the model freedom to select more samples as support vectors. A lower C will create a margin that "broadly" classifies the examples, while a higher C aims to get the classification perfect for all training examples, potentially leading to overfitting.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <select id="svm_hyperparameter2" name="svm_hyperparameter2" style="height: 25px; width: 100px; margin-top: 23px;">
+                        <option value="0.05">0.05</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.25">0.25</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.9">0.9</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+
+                <div class="flex">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                            degree (for polynomial kernel):
+                            <span class="info-icon">(i)</span>
+                            <div class="info-tooltip">
+                                <p style="font-size: 13px; width:265px; color: black;">
+                                    This is a parameter needed only when using the 'poly' kernel. It represents the degree of the polynomial used to find the hyperplane to split the data. The degree of the polynomial is a measure of how complex the model is and how it can fit more complicated structures in your data. Higher degrees can model more complex structures but also risk overfitting.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <select id="svm_hyperparameter3" name="svm_hyperparameter3" style="height: 25px; width: 100px; margin-top: 23px;">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <!-- Add more options for degree as needed -->
+                    </select>
+                </div>
+                <h6>K-fold</h6>
+                <div class="flex">
+                  <div style="display: flex; flex-direction: column;">
+                      <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                          kfold (Number of Folds in Cross-Validation):
+                          <span class="info-icon">(i)</span>
+                          <div class="info-tooltip">
+                              <p style="font-size: 13px; width:265px; color: black;">
+                                  This parameter specifies the number of folds in a (k-fold) cross-validation. Cross-validation is a resampling procedure used to evaluate machine learning models on a limited data sample. The procedure has a single parameter called k that refers to the number of groups that a given data sample is to be split into. This process is beneficial in assessing the effectiveness of the model, especially in avoiding overfitting.
+                              </p>
+                          </div>
+                      </label>
+                  </div>
+                  <select id="svm_kfold" name="svm_kfold" style="height: 25px; width: 100px; margin-top: 23px;">
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                  </select>
+              </div>
+              <div class="flex">
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                        SMOTE:
+                        <span class="info-icon">(i)</span>
+                        <div class="info-tooltip">
+                            <p style="font-size: 13px; width: 265px; color:black;">
+                                This parameter specifies whether to use the Synthetic Minority Over-sampling Technique (SMOTE) to balance the class distribution. SMOTE is an oversampling technique that generates synthetic samples from the minority class. It is used to obtain a more balanced dataset, which can improve the performance of the model, especially when the classes are imbalanced.
+                            </p>
+                        </div>
+                    </label>
+                </div>
+                <input type="checkbox" 
+                style="margin-top: 1.5rem; margin-left: 0.8rem;" name="svm_smote" id="svm_smote">
+                  </div>
+            </div>
+          </div>
+          
+          <div>
+            <input type="checkbox" name="model" value="knn" />
+            <span class="preprocess-options">k-Nearest Neighbor</span>
+            <div class="column" id="knn">
+              <h6>Enter Hyper-parameter</h2>
+              
+                <div class="flex">
+                  <div style="display: flex; flex-direction: column;">
+                      <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                          n_neighbors:
+                          <span class="info-icon">(i)</span>
+                          <div class="info-tooltip">
+                              <p style="font-size: 13px; width:265px; color: black;">
+                                  This hyperparameter specifies the number of neighbors to use for voting in the KNN algorithm. It defines how many nearest neighbors (closest data points) the algorithm will consider when it makes a prediction. The choice of n_neighbors significantly affects the model's performance and decision boundaries. A smaller number makes the model more sensitive to noise in data, while a larger number makes it more resilient to outliers but might blur the class distinctions.
+                              </p>
+                          </div>
+                      </label>
+                  </div>
+                  <select id="knn_hyperparameter" name="knn_hyperparameter" style="height: 25px; width: 100px; margin-top: 23px;">
+                      <option value="1">1</option>
+                      <option value="3">3</option>
+                      <option value="5">5</option>
+                      <option value="7">7</option>
+                      <option value="9">9</option>
+                      <option value="11">11</option>
+                  </select>
+              </div>
+              <h6>K-fold</h6>
+              <div class="flex">
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                        kfold (Number of Folds in Cross-Validation):
+                        <span class="info-icon">(i)</span>
+                        <div class="info-tooltip">
+                            <p style="font-size: 13px; width:265px; color: black;">
+                                This parameter specifies the number of folds in a (k-fold) cross-validation. Cross-validation is a resampling procedure used to evaluate machine learning models on a limited data sample. The procedure has a single parameter called k that refers to the number of groups that a given data sample is to be split into. This process is beneficial in assessing the effectiveness of the model, especially in avoiding overfitting.
+                            </p>
+                        </div>
+                    </label>
+                </div>
+                <select id="knn_kfold" name="knn_kfold" style="height: 25px; width: 100px; margin-top: 23px;">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            <div class="flex">
+              <div style="display: flex; flex-direction: column;">
+                  <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                      SMOTE:
+                      <span class="info-icon">(i)</span>
+                      <div class="info-tooltip">
+                          <p style="font-size: 13px; width: 265px; color:black;">
+                              This parameter specifies whether to use the Synthetic Minority Over-sampling Technique (SMOTE) to balance the class distribution. SMOTE is an oversampling technique that generates synthetic samples from the minority class. It is used to obtain a more balanced dataset, which can improve the performance of the model, especially when the classes are imbalanced.
+                          </p>
+                      </div>
+                  </label>
+              </div>
+              <input type="checkbox" 
+              style="margin-top: 1.5rem; margin-left: 0.8rem;" name="knn_smote" id="knn_smote">
+                </div>
+            </div>
+          </div>
+  
+          <div>
+            <input type="checkbox" name="model" value="decisiontree" />
+            <span class="preprocess-options">Decision Trees</span>
+            <div class="column" id="decisiontree">
+              <h6>Enter Hyper-parameter</h2>
+                <div class="flex">
+                  <div style="display: flex; flex-direction: column;">
+                      <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                          criterion (Function to Measure the Quality of a Split):
+                          <span class="info-icon">(i)</span>
+                          <div class="info-tooltip">
+                              <p style="font-size: 13px; width:265px; color: black;">
+                                  This hyperparameter allows you to choose the function used to evaluate the quality of a split in the decision tree. The two commonly used criteria are "gini" for the Gini impurity and "entropy" for the information gain. Gini impurity is a measure of how often a randomly chosen element from the set would be incorrectly labeled if it was randomly labeled according to the distribution of labels in the subset. Entropy is a measure of the information contained in the probability distribution of class labels in the subset.
+                              </p>
+                          </div>
+                      </label>
+                  </div>
+                  <select id="decisiontree_hyperparameter1" name="decisiontree_hyperparameter1"  style="height: 25px; width: 100px; margin-top: 23px;">
+                      <option value="gini">Gini</option>
+                      <option value="entropy">Entropy</option>
+                  </select>
+              </div>
+          
+              <div class="flex">
+                  <div style="display: flex; flex-direction: column;">
+                      <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                          max_depth (Maximum Depth of the Tree):
+                          <span class="info-icon">(i)</span>
+                          <div class="info-tooltip">
+                              <p style="font-size: 13px; width:265px; color: black;">
+                                  This hyperparameter determines the maximum depth of the tree. Depth is the length of the longest path from a root to a leaf. A tree with only a root node has a depth of 0. The max_depth limits the length of the path from the root node, effectively controlling the complexity of the decision tree. It's a way to prevent the tree from overfitting by limiting how much it can learn about the data. A deeper tree can model more complex relationships but might overfit to the training data if too deep.
+                              </p>
+                          </div>
+                      </label>
+                  </div>
+                  <select id="decisiontree_hyperparameter2" name="decisiontree_hyperparameter2" style="height: 25px; width: 100px; margin-top: 23px;">
+                      <option value="3">3</option>
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                      <option value="20">20</option>
+                  </select>
+              </div>
+                <h6>K-fold</h6>
+                <div class="flex">
+                  <div style="display: flex; flex-direction: column;">
+                      <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                          kfold (Number of Folds in Cross-Validation):
+                          <span class="info-icon">(i)</span>
+                          <div class="info-tooltip">
+                              <p style="font-size: 13px; width:265px; color: black;">
+                                  This parameter specifies the number of folds in a (k-fold) cross-validation. Cross-validation is a resampling procedure used to evaluate machine learning models on a limited data sample. The procedure has a single parameter called k that refers to the number of groups that a given data sample is to be split into. This process is beneficial in assessing the effectiveness of the model, especially in avoiding overfitting.
+                              </p>
+                          </div>
+                      </label>
+                  </div>
+                  <select id="decisiontree_kfold" name="decisiontree_kfold" style="height: 25px; width: 100px; margin-top: 23px;">
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                  </select>
+              </div>
+              <div class="flex">
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                        SMOTE:
+                        <span class="info-icon">(i)</span>
+                        <div class="info-tooltip">
+                            <p style="font-size: 13px; width: 265px; color:black;">
+                                This parameter specifies whether to use the Synthetic Minority Over-sampling Technique (SMOTE) to balance the class distribution. SMOTE is an oversampling technique that generates synthetic samples from the minority class. It is used to obtain a more balanced dataset, which can improve the performance of the model, especially when the classes are imbalanced.
+                            </p>
+                        </div>
+                    </label>
+                </div>
+                <input type="checkbox" 
+                style="margin-top: 1.5rem; margin-left: 0.8rem;" name="decisiontree_smote" id="decisiontree_smote">
+                  </div>
+            </div>
+          </div>
+        </div>
+
+
+        <br /><br />
+        <button onclick="goto()" type="submit">Submit</button>
+      </div>
+
+      
+
+      <div class="text-center" id="clustring_algo" style="margin-top: 20px">
+        <br />
+        <h1>Choose Your Clustering Model:</h1>
+        <form method="POST" action="/Cmodels">
+          <div class="flex">
+            <div>
+              <input type="checkbox" name="model" value="kmean" />
+              <span class="preprocess-options"> K-means</span>
+              <div class="column" id="kmean">
+                <h6>Enter Hyper-parameter</h2>
+                
+                  <div class="flex">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                            n_clusters:
+                            <span class="info-icon">(i)</span>
+                            <div class="info-tooltip">
+                                <p style="font-size: 13px; width:265px; color: black;">
+                                    This parameter specifies the number of clusters K-Means should form. It is one of the most crucial hyperparameters and significantly influences the clustering outcome. Choosing the right number of clusters is essential for accurate and meaningful segmentation of the data.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <select type="number" placeholder="3..etc" name="kmean_hyperparameter1" id="" style="height: 25px; width: 100px; margin-top: 23px;">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+
+                <div class="flex">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                            n_init:
+                            <span class="info-icon">(i)</span>
+                            <div class="info-tooltip">
+                                <p style="font-size: 13px; width:265px; color: black;">
+                                    This parameter determines the number of times the K-Means algorithm will be run with different centroid seeds. The final results will be the best output of these runs in terms of inertia. A higher number of initializations increases the chance of finding a more optimal clustering but at the cost of computational time.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <select type="number" placeholder="50..etc" name="kmean_hyperparameter2" id="" style="height: 25px; width: 100px; margin-top: 23px;">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+
+                <div class="flex">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                            max_iter:
+                            <span class="info-icon">(i)</span>
+                            <div class="info-tooltip">
+                                <p style="font-size: 13px; width:265px; color: black;">
+                                    This represents the maximum number of iterations for a single run of the algorithm. An iteration in K-Means includes assigning points to the nearest cluster centroid and then re-calculating the centroids. This parameter can be important for convergence, particularly in complex datasets.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <select type="number" placeholder="300..etc" name="kmean_hyperparameter3" id="" style="height: 25px; width: 100px; margin-top: 23px;">
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="300">300</option>
+                        <option value="400">400</option>
+                        <option value="500">500</option>
+                    </select>
+                </div>
+
+                <div class="flex">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                            init:
+                            <span class="info-icon">(i)</span>
+                            <div class="info-tooltip">
+                                <p style="font-size: 13px; width:265px; color: black;">
+                                    The initialization method for centroids. 'k-means++' selects initial cluster centers in a smart way to speed up convergence, while 'random' chooses them randomly. The choice of initialization can impact the effectiveness of the clustering.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <select type="text" placeholder="k-means++..etc" name="kmean_hyperparameter4" id="" style="height: 25px; width: 100px; margin-top: 23px;">
+                        <option value="k-means++">k-means++</option>
+                        <option value="random">random</option>
+                    </select>
+                </div>
+                <div class="flex">
+                  <div style="display: flex; flex-direction: column;">
+                      <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                          SMOTE:
+                          <span class="info-icon">(i)</span>
+                          <div class="info-tooltip">
+                              <p style="font-size: 13px; width: 265px; color:black;">
+                                  This parameter specifies whether to use the Synthetic Minority Over-sampling Technique (SMOTE) to balance the class distribution. SMOTE is an oversampling technique that generates synthetic samples from the minority class. It is used to obtain a more balanced dataset, which can improve the performance of the model, especially when the classes are imbalanced.
+                              </p>
+                          </div>
+                      </label>
+                  </div>
+                  <input type="checkbox" 
+                  style="margin-top: 1.5rem; margin-left: 0.8rem;" name="kmean_smote" id="kmean_smote">
+                    </div>
+              </div>
+            </div>
+            <div>
+              <input type="checkbox" name="model" value="dbscan" />
+              <span class="preprocess-options">DBSCAN</span>
+              <div class="column" id="dbscan">
+                <h6>Enter Hyper-parameter</h2>
+                  <div class="flex">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                            eps (epsilon):
+                            <span class="info-icon">(i)</span>
+                            <div class="info-tooltip">
+                                <p style="font-size: 13px; width:265px; color: black;">
+                                    This parameter defines the maximum distance between two samples for them to be considered as in the same neighborhood. It's crucial for the formation of clusters and significantly influences the number and size of the clusters. A small eps value tends to result in many small clusters, while a larger value tends to create fewer, larger clusters.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <select type="text" placeholder="1.0..etc" name="dbscan_hyperparameter1" id="" style="height: 25px; margin-top: 23px;">
+                        <option value="0.3">0.3</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.7">0.7</option>
+                        <option value="1.0">1.0</option>
+                        <option value="1.2">1.2</option>
+                        <option value="1.5">1.5</option>
+                    </select>
+                </div>
+            
+                <div class="flex">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                            min_samples:
+                            <span class="info-icon">(i)</span>
+                            <div class="info-tooltip">
+                                <p style="font-size: 13px; width:265px; color: black;">
+                                    This parameter specifies the number of samples in a neighborhood for a point to be considered as a core point. It's a key factor in determining the density requirement for clusters. Increasing min_samples results in a higher density necessary to form a cluster, which can be useful for noisier datasets.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <select type="number" placeholder="5..etc" name="dbscan_hyperparameter2" id="" style="height: 25px; margin-top: 23px;">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            
+                <div class="flex">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                            metric:
+                            <span class="info-icon">(i)</span>
+                            <div class="info-tooltip">
+                                <p style="font-size: 13px; width:265px; color: black;">
+                                    The metric parameter defines the distance metric to use for calculating distances between instances in feature space. Common metrics include 'euclidean', 'manhattan', and 'cosine'. The choice of metric should reflect the nature of your data and the type of distances that are meaningful for your analysis.
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <select type="text" placeholder="l1.etc" name="dbscan_hyperparameter3" id="" style="height: 25px; margin-top: 23px;">
+                        <option value="euclidean">euclidean</option>
+                        <option value="manhattan">manhattan</option>
+                        <option value="cosine">cosine</option>
+                    </select>
+                </div>
+                <div class="flex">
+                  <div style="display: flex; flex-direction: column;">
+                      <label style="font-weight: 500; display: flex; justify-content: flex-start; margin-left: 5px;">
+                          SMOTE:
+                          <span class="info-icon">(i)</span>
+                          <div class="info-tooltip">
+                              <p style="font-size: 13px; width: 265px; color:black;">
+                                  This parameter specifies whether to use the Synthetic Minority Over-sampling Technique (SMOTE) to balance the class distribution. SMOTE is an oversampling technique that generates synthetic samples from the minority class. It is used to obtain a more balanced dataset, which can improve the performance of the model, especially when the classes are imbalanced.
+                              </p>
+                          </div>
+                      </label>
+                  </div>
+                  <input type="checkbox" 
+                  style="margin-top: 1.5rem; margin-left: 0.8rem;" name="dbscan_smote" id="dbscan_smote">
+                    </div>
+                
+              </div>
+            </div>
+          </div>
+          <br />
+          <input type="submit" value="Run Models" />
+        </form>
+      </div>
+    </div>
+
+    <div style="height: 60px;">
+
+    </div>
+    <script>
+     document.querySelectorAll('.info-icon').forEach((icon) => {
+            const tooltip = icon.nextElementSibling;
+            icon.addEventListener('mouseenter', () => {
+                tooltip.style.display = 'block';
+            });
+
+            icon.addEventListener('mouseleave', () => {
+                tooltip.style.display = 'none';
+            });
+        });
+      // var kmean_parameters ={
+      //   "n_clusters": doucument.queryselector("kmean_hyperparameter1").value,
+      //   "n_init": document.queryselector("kmean_hyperparameter2").value,
+      //   "max_iter": document.queryselector("kmean_hyperparameter3").value,
+      //   "init": document.queryselector("kmean_hyperparameter4").value
+      // }
+      // var dbscan_parameters ={
+      //   "eps": doucument.queryselector("dbscan_hyperparameter1").value,
+      //   "min_samples": document.queryselector("dbscan_hyperparameter2").value,
+      //   "metric": document.queryselector("dbscan_hyperparameter3").value
+      // }
+      function goto() {
+        var nb_parameters ={
+        "alpha": document.querySelector('select[name="naivebayes_hyperparameter1"]').value,
+        "fit_prior": document.querySelector('select[name="naivebayes_hyperparameter2"]').value==="true",
+        "kfold": document.querySelector('select[name="naivebayes_kfold"]').value,
+        "smote": document.querySelector('input[name="naivebayes_smote"]').checked
+      }
+      console.log(nb_parameters)
+      var svm_parameters ={
+        "kernel": document.querySelector('select[name="svm_hyperparameter1"]').value,
+        "C": document.querySelector('select[name="svm_hyperparameter2"]').value,
+        "degree": document.querySelector('select[name="svm_hyperparameter3"]').value,
+        "kfold": document.querySelector('select[name="svm_kfold"]').value,
+        "smote": document.querySelector('input[name="svm_smote"]').checked
+      }
+      var knn_parameters ={
+        "n_neighbors": document.querySelector('select[name="knn_hyperparameter"]').value,
+        "kfold": document.querySelector('select[name="knn_kfold"]').value,
+        "smote": document.querySelector('input[name="knn_smote"]').checked
+      }
+      var decisiontree_parameters ={
+        "criterion": document.querySelector('select[name="decisiontree_hyperparameter1"]').value,
+        "max_depth": document.querySelector('select[name="decisiontree_hyperparameter2"]').value,
+        "kfold": document.querySelector('select[name="decisiontree_kfold"]').value,
+        "smote": document.querySelector('input[name="decisiontree_smote"]').checked
+      }
+        var models = document.getElementsByName("model");
+        var selectedModels = [];
+        console.log(models,models.length)
+        for (var i = 0; i < models.length; i++) {
+          console.log(models[i].checked,models[i].value)
+          if (models[i].checked) {
+            if(models[i].value == "naivebayes"){
+              var modelinfo={
+                "model": models[i].value,
+                "parameters": nb_parameters
+              };
+              selectedModels.push(modelinfo);
+            }
+            else if(models[i].value=="svm"){
+              var modelinfo={
+                "model": models[i].value,
+                "parameters": svm_parameters
+              };
+              selectedModels.push(modelinfo);
+            }
+            else if(models[i].value=="knn"){
+              var modelinfo={
+                "model": models[i].value,
+                "parameters": knn_parameters
+              };
+              selectedModels.push(modelinfo);
+            }
+            else if(models[i].value=="decisiontree"){
+              var modelinfo={
+                "model": models[i].value,
+                "parameters": decisiontree_parameters
+              };
+              selectedModels.push(modelinfo);
+            }  
+          }
+        }
+        if (selectedModels.length > 0) {
+          
+          var modelParams = selectedModels.map(function(model) {
+    var parameters = model.parameters;
+    var encodedParams = encodeURIComponent(JSON.stringify(parameters));
+    console.log(model.model + '=' + encodedParams);
+    return model.model + '=' + encodedParams;
+});
+
+var url = "/" + modelParams.join('&');
+console.log(url);
+window.location.href = url;
+          console.log(selectedModels);
+        }
+      }
+     
+      var naivebayes = document.getElementById("naivebayes");
+      var svm = document.getElementById("svm");
+      var knn = document.getElementById("knn");
+      var decisiontree = document.getElementById("decisiontree");
+      var kmean = document.getElementById("kmean");
+      var dbscan = document.getElementById("dbscan");
+      var models = document.getElementsByName("model");
+      for (var i = 0; i < models.length; i++) {
+        models[i].addEventListener("click", function () {
+          if (this.value == "naivebayes") {
+              if(naivebayes.style.display == "block"){
+                naivebayes.style.display = "none";
+                localStorage.setItem("naivebayes", "none");
+              }else{
+                naivebayes.style.display = "block";
+                localStorage.setItem("naivebayes", "block");
+              }
+           
+          } else if (this.value == "svm") {
+            if(svm.style.display == "block"){
+                svm.style.display = "none";
+                localStorage.setItem("svm", "none");
+              }else{
+                svm.style.display = "block";
+                localStorage.setItem("svm", "block");
+              }
+          } else if (this.value == "knn") {
+            if(knn.style.display == "block"){
+                knn.style.display = "none";
+                localStorage.setItem("knn", "none");
+              }else{
+                knn.style.display = "block";
+                localStorage.setItem("knn", "block");
+              }
+          } else if (this.value == "decisiontree") {
+            if(decisiontree.style.display == "block"){
+                decisiontree.style.display = "none";
+                localStorage.setItem("decisiontree", "none");
+              }else{
+                decisiontree.style.display = "block";
+                localStorage.setItem("decisiontree", "block");
+              }
+          }
+          else if (this.value == "kmean") {
+            if(kmean.style.display == "block"){
+                kmean.style.display = "none";
+                localStorage.setItem("kmean", "none");
+              }else{
+                kmean.style.display = "block";
+                localStorage.setItem("kmean", "block");
+              }
+          }
+          else if (this.value == "dbscan") {
+            if(dbscan.style.display == "block"){
+                dbscan.style.display = "none";
+                localStorage.setItem("dbscan", "none");
+              }else{
+                dbscan.style.display = "block";
+                localStorage.setItem("dbscan", "block");
+              }
+          }
+
+        });
+      }
+    
+      window.onload = function(){
+      
+        if(window.location.href.includes("/admin/supervised") || window.location.href.includes("/preprocess/supervised")){
+            document.getElementById('clustring_algo').style.display= "none";
+            document.getElementById("clustring_form").style.display= "none";
+        }
+        else if(window.location.href.includes("/admin/unsupervised") || window.location.href.includes("/preprocess/unsupervised"))
+        {
+          document.getElementById('classification_algo').style.display= "none";
+          document.getElementById("classification_form").style.display= "none";
+        }
+
+      if(window.location.href.includes("/preprocess")){
+        if(localStorage.getItem("naivebayes") == "block"){
+          naivebayes.style.display = "block";
+        }
+        if(localStorage.getItem("svm") == "block"){
+          svm.style.display = "block";
+        }
+        if(localStorage.getItem("knn") == "block"){
+          knn.style.display = "block";
+        }
+        if(localStorage.getItem("decisiontree") == "block"){
+          decisiontree.style.display = "block";
+        }
+        if(localStorage.getItem("kmean") == "block"){
+          kmean.style.display = "block";
+        }
+        if(localStorage.getItem("dbscan") == "block"){
+          dbscan.style.display = "block";
+        }
+      }
+      else{
+        naivebayes.style.display = "none";
+        localStorage.setItem("naivebayes", "none");
+        svm.style.display = "none";
+        localStorage.setItem("svm", "none");
+        knn.style.display = "none";
+        localStorage.setItem("knn", "none");
+        decisiontree.style.display = "none";
+        localStorage.setItem("decisiontree", "none");
+        kmean.style.display = "none";
+        localStorage.setItem("kmean", "none");
+        dbscan.style.display = "none";
+        localStorage.setItem("dbscan", "none");
+      }
+        
+      }
+    </script>
+    
+    
+  </body>
+</html>

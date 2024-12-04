@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #302F3F;
+            color: #F4F4F3;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            background-color: #887B94;
+            color: #F4F4F3;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #D9A769;
+        }
+
+        h1 {
+            font-size: 40px;
+            color: #E2442F;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        label {
+            font-size: 20px;
+            color: #F4F4F3;
+            margin-top: 20px;
+            display: block;
+        }
+
+        input[type='file'] {
+            color: #F4F4F3;
+            border: none;
+            background-color: #887B94;
+            padding: 10px;
+            width: 300px;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .preprocess-option {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #F4F4F3;
+            display: inline-block;
+            margin-right: 20px;
+            letter-spacing: 1px;
+        }
+
+        button[type='submit'] {
+            width: 200px;
+            height: 40px;
+            border: none;
+            background-color: #E2442F;
+            color: #F4F4F3;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type='submit']:hover {
+            background-color: #D9A769;
+        }
+
+        /* Responsive Styles */
+        @media only screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 32px;
+                margin-top: 20px;
+                margin-bottom: 10px;
+            }
+
+            input[type='file'] {
+                width: 100%;
+            }
+
+            .preprocess-option {
+                margin-bottom: 10px;
+            }
+
+            button[type='submit'] {
+                width: 100%;
+            }
+        }
+
+        /* Custom Color Scheme */
+        .orange {
+            color: #E2442F;
+        }
+    </style>
+</head>
+<body>
+    <a href="home">Home Page</a>
+    <h1>Preprocess Data</h1>
+
+    <div class="container">
+        <form action="preprocess" method="POST" enctype="multipart/form-data">
+            <label for="dataset">Upload Training File:</label>
+            <br><br>
+            <input type="file" name="dataset" id="dataset" required>
+            <br><br>
+            <label for="preprocessoption">Select the Preprocessing Operations you want to perform on the data:</label>
+            <br>
+            <input type="checkbox" name="preprocessoption" id="lowercase" value="lowercase">
+            <span class="preprocess-option">Convert to lower-case</span>
+            <input type="checkbox" name="preprocessoption" id="stopwords" value="stopwords">
+            <span class="preprocess-option">Remove stop words</span>
+            <input type="checkbox" name="preprocessoption" id="lemmatize" value="lemmatize">
+            <span class="preprocess-option">Lemmatization</span>
+            <br>
+            <button type="submit">Preprocess Data</button>
+        </form>
+    </div>
+    <div class="container">
+        <h1 class="orange text-center">Model Training</h1>
+
+        <h2 class="orange">Preprocessed Data</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        {% for column in columns %}
+                            <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                        <tr>
+                            {% for value in row %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <ul class="pagination">
+                <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ page-1 }}" {% if page == 1 %}tabindex="-1" aria-disabled="true"{% endif %}>Previous</a>
+                </li>
+                {% for p in range(1, num_pages+1) %}
+                    <li class="page-item {% if p == page %}active{% endif %}">
+                        <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                    </li>
+                {% endfor %}
+                <li class="page-item {% if page == num_pages %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ page+1 }}" {% if page == num_pages %}tabindex="-1" aria-disabled="true"{% endif %}>Next</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+        
+        <div class="text-center">
+            <h1>Choose Your Classification Model:</h1>
+            <br>
+            <label><input type="checkbox" name="model" value="naivebayes"> Naive Bayes</label>
+            <label><input type="checkbox" name="model" value="svm"> SVM</label>
+            <label><input type="checkbox" name="model" value="knn"> k-Nearest Neighbor</label>
+            <label><input type="checkbox" name="model" value="decisiontree"> Decision Trees</label>
+            <br><br>
+            <button onclick="goto()" class="btn btn-primary">Submit</button>
+        </div>
+
+        <div class="text-center" style="margin-top: 20px;">
+            <label style="font-size: 20pt;" class="orange">Choose Your Clustering Model:</label>
+            <br>
+            <h1>Select Models</h1>
+            <form method="POST" action="/Cmodels">
+                <label>
+                    <input type="checkbox" name="model" value="kmean"> K-means
+                </label>
+                <br>
+                <label>
+                    <input type="checkbox" name="model" value="dbscan"> DBSCAN
+                </label>
+                <br>
+                <input type="submit" value="Run Models" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function goto() {
+            var models = document.getElementsByName('model');
+            var selectedModels = [];
+            for (var i = 0; i < models.length; i++) {
+                if (models[i].checked) {
+                    selectedModels.push(models[i].value);
+                }
+            }
+            if (selectedModels.length > 0) {
+                window.location.href = "/" + selectedModels.join(",");
+            }
+        }
+    </script>
+</body>
+</html>
